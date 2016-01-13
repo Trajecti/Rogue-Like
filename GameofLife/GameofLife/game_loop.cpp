@@ -1,20 +1,19 @@
 #include "SFML\Graphics.hpp"
 #include <iostream>
-#include "draw_tile.h"
 #include "level.h"
 #include "boost\multi_array.hpp"
-#include <tuple>
 #include "game_loop.h"
 #include "maploader.h"
 
 
-
+const int wall = 17 * 64 + 40; 
+const int t_floor = 864 ;
 
 int game_loop(int res_x, int res_y, int grid_size) {
 	//int grid_x = (res_x) / grid_size;
 	//int grid_y = (res_y) / grid_size;
-	int grid_x = 50;
-	int grid_y = grid_x;
+	int grid_x = 49;
+
 	// Game Loop starts
 	sf::RenderWindow window(sf::VideoMode(res_x, res_y), "Roguelike");
 	window.setVerticalSyncEnabled(true);
@@ -22,11 +21,12 @@ int game_loop(int res_x, int res_y, int grid_size) {
 
 	TileMap map;
 	MapLoader loader(grid_x,grid_x,"DungeonCrawlTileset.png");
-	level floor(grid_x,10,((grid_x*grid_x)/40),0);
+	//generate floor with only odd sizes
+	layer floor(grid_x, grid_x, wall, t_floor,25,10);
 	loader.set_tile_num(floor.get_map());
 	map.LoadFrom(&loader);
-	floor.save_map();
-	load_map("floor0.txt");
+	//floor.save_map();
+	//load_map("floor0.txt");
 
 	while (window.isOpen()) {
 		sf::Event event;

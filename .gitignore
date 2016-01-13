@@ -71,6 +71,7 @@ ipch/
 *.aps
 *.ncb
 *.opensdf
+*.VC.opendb
 *.sdf
 *.cachefile
 
@@ -194,3 +195,4 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+

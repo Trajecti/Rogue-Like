@@ -24,13 +24,7 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="draw_tile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="game_loop.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tile_loader.h">
@@ -45,15 +39,15 @@
     <ClInclude Include="level.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameofLife.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="draw_tile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="game_loop.cpp">
@@ -65,7 +59,7 @@
     <ClCompile Include="tilemap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="floorgen.cpp">
+    <ClCompile Include="level.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

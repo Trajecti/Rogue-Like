@@ -1,84 +1,37 @@
 #pragma once
 #include <vector>
+#include <map>
+#include <random>
 #include <boost\multi_array.hpp>
-#include <CGAL\Delaunay_triangulation_2.h>
-#include <CGAL\Exact_predicates_inexact_constructions_kernel.h>
-#include <CGAL\boost\graph\graph_traits_Delaunay_triangulation_2.h>
-#include <boost/graph/filtered_graph.hpp>
-#include <boost/graph/kruskal_min_spanning_tree.hpp>
-#include <boost/graph/adjacency_list.hpp>
 
-typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
-typedef CGAL::Delaunay_triangulation_2<K>                   Delaunay;
-typedef K::Point_2                                          Point;
-
-// As we only consider finite vertices and edges
-// we need the following filter : from CGAL example
-template <typename T>
-struct Is_finite {
-	const T* t_;
-	Is_finite()
-		: t_(NULL)
-	{}
-	Is_finite(const T& t)
-		: t_(&t)
-	{ }
-	template <typename VertexOrEdge>
-	bool operator()(const VertexOrEdge& voe) const {
-		return !t_->is_infinite(voe);
-	}
-};
-
-typedef Is_finite<Delaunay> Filter;
-typedef boost::filtered_graph<Delaunay, Filter, Filter> Finite_triangulation;
-typedef boost::graph_traits<Finite_triangulation>::vertex_descriptor vertex_descriptor;
-typedef boost::graph_traits<Finite_triangulation>::vertex_iterator vertex_iterator;
-typedef boost::graph_traits<Finite_triangulation>::edge_descriptor edge_descriptor;
-// indices associated to the vertices
-typedef std::map<vertex_descriptor, int> VertexIndexMap;
-// Changing std::map to a property map
-typedef boost::associative_property_map<VertexIndexMap> VertexIdPropertyMap;
-typedef std::pair<int, int> Edge;
-typedef std::pair<int,int> pt;
+// classes that create rooms and also generaates the floor in a procedurally generated manner
+// credit to Bob Nystrom's explanations on generating random floors
 
 class room
 {
 public:
-	int xmin, xmax, ymin, ymax,id;
-	room(int sxmin, int symin, int max_sz, int intersect_pct);
-	room(int x_size, int gx, int gy);
+	int xmin, xmax, ymin, ymax, id;
+	room(int x, int y, double rect_pct, int room_space, int r_id);
 };
 
-class level {
-private:
-	std::vector<room> rooms;
-	std::vector<std::pair<double, double>> room_centers;
-	int difficulty, gx, gy,wall,floor,id;
-	boost::multi_array<int, 2> map;
+class layer {
 public:
-	level() {};
-	level(int gx, int difficulty, int max_room_size,int id);
-	level(int gx, int gy, int difficulty, int wall, int floor, int id);
-
-	int get_gx() { return gx; }
-	int get_gy() { return gy; }
-	std::vector<room> get_rooms() { return rooms; }
-	void set_rooms(std::vector<room> floor) { rooms = floor; }
-	
-	int get_difficulty() { return difficulty; }
-	void gen_level_map(int t_floor, int t_wall);
-	boost::multi_array<int, 2> get_map() { return map; }
-	
-	Delaunay delaunay_triangulated_level();
-	std::vector<std::pair<Point, Point>> gen_edges();
-	std::vector<pt> tunnel_astar_search(pt p1,pt p2);
-	void tunnel_rooms();
-	
-	void load_map_data(std::vector<int> data);
-	void save_map();
+	void add_rooms(int num_rooms,int room_space,int rect_pct);
+	void add_region() { region_index += 1; }
+	void carve(int pt) { map_data[pt] = region_index; map[pt] = floor; }
+	layer(int x_, int y_, int t_wall, int t_floor, int num_rooms, int max_room_space);
+	void maze_gen(int x);
+	bool carve_possible(int x, int dir);
+	bool overlap(room& r);
+	void connect_regions();
+	void fill_dead_ends();
+	boost::multi_array<int, 2> get_map();
+private:
+	typedef std::pair<int, int> pt; //give region and coordinate;
+	int x, y, gx, gy, wall, floor, wind_pct, connect_pct, region_index;
+	std::map<char, int> dir;
+	std::map<int, int> map_data;
+	std::vector<int> map;
+	std::vector<room> rooms;
 };
-
-level load_map(std::string filename);
-float sqr_euclid_dis(pt p1, pt p2);
-
 
