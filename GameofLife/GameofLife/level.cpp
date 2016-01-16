@@ -150,6 +150,9 @@ void layer::add_rooms(int num_rooms, int max_room_space, int rect_pct)
 		if (overlap(temp)) {
 			continue;
 		}
+		else if ((temp.xmin <= 0) || (temp.ymin <= 0) || (temp.xmax >= x) || (temp.ymax >= y)) {
+			continue;
+		}
 
 		id++;
 		rooms.push_back(temp);

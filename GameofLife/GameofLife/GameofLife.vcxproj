@@ -158,6 +158,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="enemy.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="game_loop.h" />
     <ClInclude Include="level.h" />
@@ -168,6 +169,8 @@
     <ClInclude Include="tile_loader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="entity.cpp" />
     <ClCompile Include="GameofLife.cpp" />
     <ClCompile Include="game_loop.cpp" />
     <ClCompile Include="level.cpp" />

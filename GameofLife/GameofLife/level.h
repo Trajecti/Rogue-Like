@@ -12,14 +12,17 @@ class room
 public:
 	int xmin, xmax, ymin, ymax, id;
 	room(int x, int y, double rect_pct, int room_space, int r_id);
+	~room() {};
 };
 
+//only generate floor with odd tile-sizes
 class layer {
 public:
 	void add_rooms(int num_rooms,int room_space,int rect_pct);
 	void add_region() { region_index += 1; }
 	void carve(int pt) { map_data[pt] = region_index; map[pt] = floor; }
 	layer(int x_, int y_, int t_wall, int t_floor, int num_rooms, int max_room_space);
+	~layer() {};
 	void maze_gen(int x);
 	bool carve_possible(int x, int dir);
 	bool overlap(room& r);
